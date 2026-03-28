@@ -1,0 +1,87 @@
+body{
+    background: #1b1b1b;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* кейс */
+#case{
+    width: 320px;
+    margin: 50px auto;
+    overflow: hidden;
+    border: 3px solid gold;
+    border-radius: 10px;
+    position: relative;
+    background: #111;
+}
+
+/* линия (куда падает предмет) */
+#case::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background: gold;
+    transform: translateX(-50%);
+}
+
+/* лента */
+#items{
+    display: flex;
+    transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* предмет */
+.item{
+    min-width: 100px;
+    height: 100px;
+    margin: 5px;
+    background: #2a2a2a;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    border: 2px solid #444;
+}
+
+/* редкости */
+.common{
+    border-color: gray;
+}
+
+.rare{
+    border-color: blue;
+}
+
+.legendary{
+    border-color: gold;
+}
+
+/* кнопка */
+#spinBtn{
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background: gold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#spinBtn:hover{
+    background: orange;
+}
+
+/* результат */
+#result{
+    margin-top: 20px;
+    font-size: 20px;
+}
+#coinsBlock{
+    text-align: end;
+}
