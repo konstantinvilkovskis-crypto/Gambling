@@ -2,6 +2,7 @@ let itemsContainer = document.getElementById("items")
 let spinBtn = document.getElementById("spinBtn")
 let result = document.getElementById("result")
 let coins = document.getElementById("coins")
+let cell = document.querySelector('.invCell')
 let coinsInlet = 1000
 
 let items = [
@@ -39,8 +40,45 @@ for(let i = 0; i < 30; i++){
         coinsInlet -= 100
         coins.textContent = coinsInlet
 
+         cells = document.querySelectorAll(".invCell")
+        
+         let selectedItem = itemsContainer.children[randomIndex].textContent
+result.textContent = "You got: " + selectedItem
+
+        addToInventory(selectedItem)
+        function addToInventory(item){
+
+            for(let i = 0; i < cells.length; i++){
+
+                if(cells[i].textContent === ""){
+                    cells[i].textContent = item
+                    return
+                }
+
+            }
+
+            alert("Inventory full!")
+        }
+
     } else {
         alert('not enough currency!')
     }
    
+})
+
+sell.addEventListener('click', function(){
+
+    for(let i = cells.length - 1; i >= 0; i--){
+
+        if(cells[i].textContent !== ""){
+            cells[i].textContent = ""
+            coinsInlet += 100
+            coins.textContent = coinsInlet
+            return
+        }
+
+    }
+
+    alert("Нет предметов!")
+
 })
