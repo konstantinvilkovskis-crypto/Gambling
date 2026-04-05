@@ -3,7 +3,9 @@ let spinBtn = document.getElementById("spinBtn")
 let result = document.getElementById("result")
 let coins = document.getElementById("coins")
 let cell = document.querySelector('.invCell')
+let energy = document.querySelector('#energy')
 let coinsInlet = 1000
+let energyInlet = 5
 
 let items = [
 "🦆",
@@ -39,6 +41,8 @@ for(let i = 0; i < 30; i++){
 
         coinsInlet -= 100
         coins.textContent = coinsInlet
+        energyInlet -= 1;
+        energy.textContent = energyInlet
 
          cells = document.querySelectorAll(".invCell")
         
