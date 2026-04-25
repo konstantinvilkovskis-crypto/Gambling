@@ -1,88 +1,116 @@
-let itemsContainer = document.getElementById("items")
-let spinBtn = document.getElementById("spinBtn")
-let result = document.getElementById("result")
-let coins = document.getElementById("coins")
-let cell = document.querySelector('.invCell')
-let energy = document.querySelector('#energy')
-let coinsInlet = 1000
-let energyInlet = 5
+const itemsContainer = document.getElementById("items");
+const spinBtn = document.getElementById("spinBtn");
+const resultLabel = document.getElementById("result");
+const coinsLabel = document.getElementById("coins");
+const energyLabel = document.getElementById("energy");
+const sellBtn = document.querySelector(".sell");
+const cells = document.querySelectorAll(".invCell");
 
-let items = [
-"🦆",
-"💎",
-"🪙",
-"🔥",
-"👑"
-]
+let coinsInlet = 1000;
+let energyInlet = 5;
 
-// заполняем ленту
-for(let i = 0; i < 30; i++){
-    let div = document.createElement("div")
-    div.className = "item"
-    div.textContent = items[Math.floor(Math.random() * items.length)]
-    itemsContainer.appendChild(div)
+// 🎰 Предметы с твоими картинками
+function getItem() {
+    let r = Math.random() * 100;
+    if (r < 65) return { img: "4-removebg-preview.png", rarity: "common", value: 50 };
+    if (r < 80) return { img: "3-removebg-preview.png", rarity: "rare", value: 150 };
+    if (r < 98) return { img: "2-removebg-preview.png", rarity: "epic", value: 250 };
+    return { img: "1.png", rarity: "legendary", value: 500 };
 }
 
+// Создание элемента для ленты
+function createItemElement(item) {
+    let div = document.createElement("div");
+    div.className = "item " + item.rarity;
+    let img = document.createElement("img");
+    img.src = item.img;
+    div.appendChild(img);
+    return div;
+}
 
- spinBtn.addEventListener("click", function(){
-
-    if(coinsInlet >= 100){
-
-        let randomIndex = Math.floor(Math.random() * 30)
-        let offset = randomIndex * 100
-
-        itemsContainer.style.transform = "translateX(-" + offset + "px)"
-
-        spinBtn.disabled = true
-
-        setTimeout(function(){
-        spinBtn.disabled = false
-        }, 2000)
-
-        coinsInlet -= 100
-        coins.textContent = coinsInlet
-        energyInlet -= 1;
-        energy.textContent = energyInlet
-
-         cells = document.querySelectorAll(".invCell")
-        
-         let selectedItem = itemsContainer.children[randomIndex].textContent
-result.textContent = "You got: " + selectedItem
-
-        addToInventory(selectedItem)
-        function addToInventory(item){
-
-            for(let i = 0; i < cells.length; i++){
-
-                if(cells[i].textContent === ""){
-                    cells[i].textContent = item
-                    return
-                }
-
-            }
-
-            alert("Inventory full!")
-        }
-
-    } else {
-        alert('not enough currency!')
+// Начальное заполнение
+function init() {
+    itemsContainer.innerHTML = "";
+    for(let i = 0; i < 50; i++) {
+        itemsContainer.appendChild(createItemElement(getItem()));
     }
-   
-})
+}
+init();
 
-sell.addEventListener('click', function(){
-
-    for(let i = cells.length - 1; i >= 0; i--){
-
-        if(cells[i].textContent !== ""){
-            cells[i].textContent = ""
-            coinsInlet += 100
-            coins.textContent = coinsInlet
-            return
-        }
-
+// 🚀 ЛОГИКА СПИНА
+spinBtn.addEventListener("click", () => {
+    if (coinsInlet < 100 || energyInlet <= 0) {
+        alert("Недостаточно средств или энергии!");
+        return;
     }
 
-    alert("Нет предметов!")
+    spinBtn.disabled = true;
+    
+    // Сброс анимации
+    itemsContainer.style.transition = "none";
+    itemsContainer.style.transform = "translateX(0)";
+    itemsContainer.innerHTML = "";
 
-})
+    const winningItem = getItem();
+    const winIndex = 40; // На каком предмете остановимся
+
+    // Генерация новой ленты под результат
+    for (let i = 0; i < winIndex + 5; i++) {
+        let item = (i === winIndex) ? winningItem : getItem();
+        itemsContainer.appendChild(createItemElement(item));
+    }
+
+    // Запуск прокрутки
+    setTimeout(() => {
+        itemsContainer.style.transition = "transform 2.5s cubic-bezier(0.1, 0, 0.1, 1)";
+        let itemWidth = 110; // 100px + 10px margin
+        let centerOffset = (320 / 2) - (itemWidth / 2);
+        let finalPos = (winIndex * itemWidth) - centerOffset;
+        itemsContainer.style.transform = `translateX(-${finalPos}px)`;
+    }, 50);
+
+    // Расходы
+    coinsInlet -= 100;
+    energyInlet -= 1;
+    coinsLabel.textContent = coinsInlet;
+    energyLabel.textContent = energyInlet;
+
+    // Финал анимации
+    setTimeout(() => {
+        addToInventory(winningItem);
+        spinBtn.disabled = false;
+
+        if (energyInlet === 0) {
+            setTimeout(() => {
+                energyInlet = 5;
+                energyLabel.textContent = energyInlet;
+            }, 1000);
+        }
+    }, 2600);
+});
+
+// Добавление в инвентарь
+function addToInventory(item) {
+    for (let cell of cells) {
+        if (cell.innerHTML === "") {
+            cell.innerHTML = `<img src="${item.img}">`;
+            cell.dataset.value = item.value;
+            cell.className = "invCell " + item.rarity;
+            return;
+        }
+    }
+}
+
+// Продажа последнего предмета
+sellBtn.addEventListener("click", () => {
+    for (let i = cells.length - 1; i >= 0; i--) {
+        if (cells[i].innerHTML !== "") {
+            coinsInlet += parseInt(cells[i].dataset.value);
+            coinsLabel.textContent = coinsInlet;
+            cells[i].innerHTML = "";
+            cells[i].className = "invCell";
+            return;
+        }
+    }
+    alert("No items!");
+});

@@ -1,23 +1,45 @@
-body{
-    background: #1b1b1b;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bebas Neue", sans-serif;
 }
 
-/* кейс */
-#case{
+body {
+    background: #1b1b1b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+#statBlock {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+#Mon { color: #4caf50; }
+#ENR { color: #2196f3; }
+#VP { color: goldenrod; }
+
+/* КОРПУС КЕЙСА */
+#case {
     width: 320px;
-    margin: 50px auto;
+    height: 110px;
+    margin: 20px auto;
     overflow: hidden;
     border: 3px solid gold;
     border-radius: 10px;
     position: relative;
     background: #111;
+    display: flex;
+    align-items: center;
 }
 
-/* линия (куда падает предмет) */
-#case::after{
+/* ЛИНИЯ ПО ЦЕНТРУ */
+#case::after {
     content: "";
     position: absolute;
     top: 0;
@@ -26,17 +48,20 @@ body{
     height: 100%;
     background: gold;
     transform: translateX(-50%);
+    z-index: 10;
 }
 
-/* лента */
-#items{
+/* ЛЕНТА */
+#items {
     display: flex;
-    transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    width: max-content;
+    transition: transform 2.5s cubic-bezier(0.1, 0, 0.1, 1);
 }
 
-/* предмет */
-.item{
+/* ПРЕДМЕТ */
+.item {
     min-width: 100px;
+    width: 100px;
     height: 100px;
     margin: 5px;
     background: #2a2a2a;
@@ -44,48 +69,44 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
     border: 2px solid #444;
+    flex-shrink: 0;
 }
 
-/* редкости */
-.common{
-    border-color: gray;
+/* КАРТИНКИ */
+.item img, .invCell img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
-.rare{
-    border-color: blue;
+/* РЕДКОСТИ */
+.common { border-color: gray; }
+.rare { border-color: #2196f3; background: rgba(33, 150, 243, 0.1); }
+.epic {border-color: #f32821; background: rgba(243, 33, 33, 0.1);}
+.legendary { 
+    border-color: gold; 
+    box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.3); 
+    background: rgba(255, 215, 0, 0.1);
 }
 
-.legendary{
-    border-color: gold;
-}
-
-/* кнопка */
-#spinBtn{
+/* КНОПКИ */
+#spinBtn, .sell {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
+    padding: 10px 30px;
+    font-size: 20px;
     background: gold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
+    text-transform: uppercase;
 }
 
-#spinBtn:hover{
-    background: orange;
-}
+#spinBtn:disabled { background: #555; cursor: not-allowed; }
 
-/* результат */
-#result{
-    margin-top: 20px;
-    font-size: 20px;
-}
-#coinsBlock{
-    text-align: end;
-}
-#backgInv{
+/* ИНВЕНТАРЬ */
+#backgInv {
     width: 320px;
     margin: 30px auto;
     display: grid;
@@ -93,37 +114,17 @@ body{
     gap: 10px;
 }
 
-.invCell{
+.invCell {
     width: 100px;
     height: 100px;
     background: #2a2a2a;
     border: 2px solid #444;
     border-radius: 10px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 30px;
-} 
-#sell{
-     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background: gold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
 }
-#statBlock{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #444;
-    border-radius: 8px;
-}
-#coins, #coins2{
-    color:green
-}
-#energy, #energy2{
-    color: blue;
+.don-opt{
+    background-color: #4caf50;
+    color: white;
 }
