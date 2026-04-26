@@ -12,9 +12,9 @@ let energyInlet = 5;
 // 🎰 Предметы с твоими картинками
 function getItem() {
     let r = Math.random() * 100;
-    if (r < 92) return { img: "4-removebg-preview.png", rarity: "common", value: 50 };
-    if (r < 95) return { img: "3-removebg-preview.png", rarity: "rare", value: 150 };
-    if (r < 98) return { img: "2-removebg-preview.png", rarity: "epic", value: 250 };
+    if (r < 80) return { img: "4-removebg-preview.png", rarity: "common", value: 50 };
+    if (r < 89) return { img: "3-removebg-preview.png", rarity: "rare", value: 100 };
+    if (r < 95) return { img: "2-removebg-preview.png", rarity: "epic", value: 200 };
     return { img: "1.png", rarity: "legendary", value: 500 };
 }
 
